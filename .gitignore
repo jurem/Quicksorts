@@ -1,4 +1,6 @@
 # executables and compiled files
 bin
 *.o
-
+cmake-build-debug
+out-*
+.idea
