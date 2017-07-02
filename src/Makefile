@@ -5,7 +5,7 @@ OUT = ../bin
 LIB = libs
 
 
-all: $(OUT) $(OUT)/genperm $(OUT)/runalg $(OUT)/bench
+all: $(OUT) $(OUT)/genseq $(OUT)/runalg $(OUT)/bench
 
 
 $(OUT):
@@ -14,13 +14,13 @@ $(OUT):
 
 # ***** linking
 
-$(OUT)/genperm: $(OUT)/genperm.o $(OUT)/perms.o
+$(OUT)/genseq: $(OUT)/genseq.o $(OUT)/seq.o
 
 
-$(OUT)/runalg: $(OUT)/perms.o $(OUT)/timer.o $(OUT)/stat.o $(OUT)/algs.o
+$(OUT)/runalg: $(OUT)/seq.o $(OUT)/timer.o $(OUT)/stat.o $(OUT)/algs.o
 
 
-$(OUT)/bench: $(OUT)/bench.o $(OUT)/perms.o $(OUT)/timer.o $(OUT)/stat.o $(OUT)/algs.o
+$(OUT)/bench: $(OUT)/bench.o $(OUT)/seq.o $(OUT)/timer.o $(OUT)/stat.o $(OUT)/algs.o
 
 
 # ***** compiling

@@ -7,9 +7,9 @@
 #include <time.h>
 #include <getopt.h>
 
-#include "libs/perms.h"
+#include "libs/seq.h"
 
-#define GENPERM
+#define GENSEQ
 #include "common.h"
 
 int main(int argc, char *argv[]) {
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     srandom(use_seed ? seed : clock());
 
     int* a = (int*)malloc(length * sizeof(int));
-    generatePerm(a, length, modulo, perm);
+    generateSeq(a, length, modulo, seq);
     printArray(a, length);
     free(a);
 

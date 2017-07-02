@@ -1,5 +1,5 @@
-#ifndef PERMS_H
-#define PERMS_H
+#ifndef SEQUENCESS_H
+#define SEQUENCES_H
 
 // array handling
 
@@ -19,22 +19,22 @@ int* readArray(int *length);
 
 int checkArraySorted(int a[], int n);
 
-// permutation kinds
+// sequence kinds
 
-typedef enum perm_t {
+typedef enum seq_t {
     None,
     Rand,
     Zig, ZigRev, ZigRevFront, ZigRevBack,
     Sort, SortRev,
     Dither
-} perm_t;
+} seq_t;
 
-perm_t str2perm(const char *str);
+seq_t str2seq(const char *str);
 
-const char* perm2str(const perm_t perm);
+const char* seq2str(const seq_t seq);
 
-void printPerms(const char *prefix);
+void printSequences(const char *prefix);
 
-void generatePerm(int a[], int len, int modulo, perm_t kind);
+void generateSeq(int a[], int len, int modulo, seq_t kind);
 
 #endif

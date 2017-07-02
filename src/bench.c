@@ -6,7 +6,7 @@
 #include "libs/common.h"
 #include "libs/timer.h"
 #include "libs/stat.h"
-#include "libs/perms.h"
+#include "libs/seq.h"
 #include "libs/algs.h"
 
 #define BENCH
@@ -18,7 +18,7 @@ void doTime() {
     int* a = malloc(length * sizeof(int));
     timer_reset(&timer);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generatePerm(a, length, modulo, perm);
+        generateSeq(a, length, modulo, seq);
         timer_start(&timer);
         algtime(a, 0, length - 1);
         timer_stop(&timer);
@@ -29,13 +29,13 @@ void doTime() {
 
 
 void doStat() {
-    if (perm != Rand) maxRepeat = 1;
+    if (seq != Rand) maxRepeat = 1;
     srandom(use_seed ? seed : clock());
     int* a = malloc(length * sizeof(int));
     timer_reset(&timer);
     stat_reset(&stat);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generatePerm(a, length, modulo, perm);
+        generateSeq(a, length, modulo, seq);
         stat_start(&stat);
         timer_start(&timer);
         algstat(a, 0, length - 1);

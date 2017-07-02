@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "libs/common.h"
-#include "libs/perms.h"
+#include "libs/seq.h"
 #include "libs/timer.h"
 #include "libs/stat.h"
 #include "libs/algs.h"

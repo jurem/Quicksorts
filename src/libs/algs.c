@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "algs.h"
-#include "perms.h"
+#include "seq.h"
 #include "algs/allalgs.h"
 
 

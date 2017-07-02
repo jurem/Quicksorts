@@ -16,7 +16,7 @@ HOST=${h%%.*}
 OUT="../out-$HOST/"
 
 SIZE=${1:-norm}
-PERM=${2:-rand}
+SEQ=${2:-rand}
 REPEAT=${3:-100}
 MAXTIME=${4:-1}
 
@@ -37,7 +37,7 @@ function do_one {
 	RANDOM=42
 	echo '        n      cmps      moves      calls    statrep      time    timerep'
 	while (( len <= MAXLEN )); do
-		$EXE -k $PERM -l $len -s $RANDOM -r $REPEAT -t $MAXTIME $alg
+		$EXE -k $SEQ -l $len -s $RANDOM -r $REPEAT -t $MAXTIME $alg
 		if     (( len < 10000)); then step=1000
 		elif  (( len < 100000)); then step=10000
 		elif (( len < 1000000)); then step=100000
@@ -47,7 +47,7 @@ function do_one {
 	done
 }
 
-repdir="$OUT/$SIZE-$PERM-r$REPEAT-t$MAXTIME"
+repdir="$OUT/$SIZE-$SEQ-r$REPEAT-t$MAXTIME"
 mkdir -p "$repdir"
 
 #algs=$(echo Quicksort{Lomuto,LomutoMoves})

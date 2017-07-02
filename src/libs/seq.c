@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "perms.h"
+#include "seq.h"
 
 
 int arrayIndexOf(int a[], int n, int val) {
@@ -54,7 +54,7 @@ int checkArraySorted(int a[], int n) {
 }
 
 
-const char* perms[] = {
+const char* sequences[] = {
     "None",
     "Rand",
     "Zig", "ZigRev", "ZigRevFront", "ZigRevBack",
@@ -64,21 +64,21 @@ const char* perms[] = {
 };
 
 
-perm_t str2perm(const char* str) {
-    for (int i = 0; perms[i] != NULL; i++)
-        if (strcasecmp(perms[i], str) == 0) return (perm_t)i;
+seq_t str2seq(const char* str) {
+    for (int i = 0; sequences[i] != NULL; i++)
+        if (strcasecmp(sequences[i], str) == 0) return (seq_t)i;
     return None;
 }
 
 
-const char* perm2str(const perm_t perm) {
-    return perms[perm];
+const char* seq2str(const seq_t seq) {
+    return sequences[seq];
 }
 
 
-void printPerms(const char *prefix) {
+void printSequences(const char *prefix) {
     printf("%s", prefix);
-    for (perm_t i = Rand; i <= Dither; i++) printf("%s ", perm2str(i));
+    for (seq_t i = Rand; i <= Dither; i++) printf("%s ", seq2str(i));
     printf("\n");
 }
 
@@ -93,10 +93,10 @@ int cmpIntRev(const void *a, const void *b) {
 }
 
 
-void generatePerm(int a[], int len, int modulo, perm_t kind) {
-	// gelenerate
+void generateSeq(int a[], int len, int modulo, seq_t kind) {
+	// generate
 	for (int i = 0; i < len; i++) a[i] = i % modulo;
-	// permute
+	// permute sequence
 	switch (kind) {
         case Rand:
             while (--len > 0) swap(a, len, random() % (len + 1));
@@ -122,7 +122,7 @@ void generatePerm(int a[], int len, int modulo, perm_t kind) {
 			for (int i = 0; i < len; i++) a[i] += i % 5;
             break;
         default:
-            fprintf(stderr, "Wrong permutation pattern (%d).\n", kind);
+            fprintf(stderr, "Wrong sequence pattern (%d).\n", kind);
             exit(42);
 	}
 }

@@ -1,11 +1,11 @@
-#if defined(GENPERM) || defined(BENCH)
+#if defined(GENSEQ) || defined(BENCH)
 // input array
-perm_t perm = Rand;		// random permutation
+seq_t seq = Rand;		// random sequence
 int modulo = 0;   		// zero means same as length
 int use_seed = 0;  		// seed (default) or given seed
 int seed;
 #endif
-int length = 1000;		// length of permutation / pre-reserved space
+int length = 1000;		// length of sequence / pre-reserved space
 
 #if defined(RUNALG) || defined(BENCH)
 // benchmark
@@ -32,7 +32,7 @@ int help_flag = 0;
 
 // command-line long options
 struct option options[] = {
-#if defined(GENPERM) || defined(BENCH)
+#if defined(GENSEQ) || defined(BENCH)
     {"kind",    required_argument, 0, 'k'},
     {"modulo",  required_argument, 0, 'm'},
     {"seed",    required_argument, 0, 's'},
@@ -53,7 +53,7 @@ struct option options[] = {
 
 
 // command-line short options
-#ifdef GENPERM
+#ifdef GENSEQ
 #define SHORTOPT "hvl:k:m:s:"
 #endif
 #ifdef RUNALG
@@ -74,12 +74,12 @@ void printUsage(const char *app_name) {
 #endif
     // Options
     printf("\nOptions:\n");
-#if defined(GENPERM) || defined(BENCH)
-    printf("  -k perm, --kind perm\n\tInput permutation kind.\n");
-    printPerms("\tperm: ");
+#if defined(GENSEQ) || defined(BENCH)
+    printf("  -k seq, --kind seq\n\tInput sequence kind.\n");
+    printSequences("\tseq: ");
 #endif
-    printf("  -l len, --length len\n\tLength of input permutation.\n");
-#if defined(GENPERM) || defined(BENCH)
+    printf("  -l len, --length len\n\tLength of input sequence.\n");
+#if defined(GENSEQ) || defined(BENCH)
     printf("  -m mod, --modulo mod\n\tRange of values is from 0 to mod-1.\n\tIf mod is zero than the same as the length.\n");
     printf("  -s num, --seed num\n\tSeed for the random number generator.\n");
 #endif
@@ -97,8 +97,8 @@ void printUsage(const char *app_name) {
 
 
 void printSettings() {
-#if defined(GENPERM) || defined(BENCH)
-    printf("Input: kind=%s, length=%d, modulo=%d", perm2str(perm), length, modulo);
+#if defined(GENSEQ) || defined(BENCH)
+    printf("Input: kind=%s, length=%d, modulo=%d", seq2str(seq), length, modulo);
     if (use_seed) printf(", seed=%d\n", seed); else printf(", seed=rnd\n");
 #endif
 #if defined(RUNALG) || defined(BENCH)
@@ -116,9 +116,9 @@ void processArgs(int argc, char* argv[]) {
             case 0:
                 if (options[option_index].flag != 0) break;
                 break;
-#if defined(GENPERM) || defined(BENCH)
+#if defined(GENSEQ) || defined(BENCH)
             case 'k':
-                perm = str2perm(optarg);
+                seq = str2seq(optarg);
                 break;
             case 'm':
                 modulo = atoi(optarg);
@@ -166,7 +166,7 @@ void processArgs(int argc, char* argv[]) {
         exit(0);
     }
 
-#if defined(GENPERM) || defined(BENCH)
+#if defined(GENSEQ) || defined(BENCH)
     if (modulo <= 0) modulo = length;
 #endif
 
