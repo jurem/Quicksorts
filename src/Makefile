@@ -40,7 +40,7 @@ $(OUT)/algs.o: algs/*.h
 # ***** other
 
 clean:
-	@rm -rf bin
+	@rm -rf $(OUT)
 
 
 @PHONY: all $(OUT) clean
