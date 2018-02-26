@@ -4,6 +4,13 @@ seq_t seq = Rand;		// random sequence
 int modulo = 0;   		// zero means same as length
 int use_seed = 0;  		// seed (default) or given seed
 int seed;
+gen1_t gen1;
+gen2_t gen2;
+gen3_t gen3;
+int parameter1;
+int parameter21;
+int parameter22;
+int parameter3;
 #endif
 int length = 1000;		// length of sequence / pre-reserved space
 
@@ -36,6 +43,13 @@ struct option options[] = {
     {"kind",    required_argument, 0, 'k'},
     {"modulo",  required_argument, 0, 'm'},
     {"seed",    required_argument, 0, 's'},
+    {"gen1",    required_argument, 0, 'A'},
+    {"gen2",    required_argument, 0, 'B'},
+    {"gen3",    required_argument, 0, 'C'},
+    {"p1",      required_argument, 0, 'X'},
+    {"p21",     required_argument, 0, 'Y'},
+    {"p22",     required_argument, 0, 'Q'},
+    {"p3",      required_argument, 0, 'Z'},
 #endif
 #if defined(RUNALG) || defined(BENCH)
     {"repeat",  required_argument, 0, 'r'},
@@ -54,13 +68,13 @@ struct option options[] = {
 
 // command-line short options
 #ifdef GENSEQ
-#define SHORTOPT "hvl:k:m:s:"
+#define SHORTOPT "hvl:k:m:s:A:B:C:X:Y:Q:Z:"
 #endif
 #ifdef RUNALG
 #define SHORTOPT "hviol:r:t:"
 #endif
 #ifdef BENCH
-#define SHORTOPT "hvl:k:m:s:r:t:"
+#define SHORTOPT "hvl:k:m:s:r:t:A:B:C:X:Y:Q:Z:"
 #endif
 
 
@@ -98,12 +112,15 @@ void printUsage(const char *app_name) {
 
 void printSettings() {
 #if defined(GENSEQ) || defined(BENCH)
-    printf("Input: kind=%s, length=%d, modulo=%d", seq2str(seq), length, modulo);
-    if (use_seed) printf(", seed=%d\n", seed); else printf(", seed=rnd\n");
+    printf("Input:   length=%d, modulo=%d", length, modulo);
+    if (use_seed) printf(", seed=%d", seed); else printf(", seed=rnd");
+    printf(", (%s-%d) (%s-%d-%d) (%s-%d)", gen1_t2str(gen1), parameter1, gen2_t2str(gen2), parameter21, parameter22, gen3_t2str(gen3), parameter3);
+    printf("\n");
 #endif
 #if defined(RUNALG) || defined(BENCH)
-    printf("Bench: maxRepeat=%d, maxTime=%d\n", maxRepeat, maxTime);
-#endif    
+    printf("Bench: maxRepeat=%d, maxTime=%d", maxRepeat, maxTime);
+    printf("\n");
+#endif
 }
 
 
@@ -127,6 +144,29 @@ void processArgs(int argc, char* argv[]) {
                 seed = atoi(optarg);
                 use_seed = 1;
                 break;
+
+            case 'A': // gen1
+                gen1 = str2gen1_t(optarg);
+                break;
+            case 'B': // gen2
+                gen2 = str2gen2_t(optarg);
+                break;
+            case 'C': // gen3
+                gen3 = str2gen3_t(optarg);
+                break;
+
+            case 'X': // p1
+                parameter1 = atoi(optarg);
+                break;
+            case 'Y': // p21
+                parameter21 = atoi(optarg);
+                break;
+            case 'Q': // p22
+                parameter22 = atoi(optarg);
+                break;
+            case 'Z': // p3
+                parameter3 = atoi(optarg);
+                break;
 #endif
 #if defined(RUNALG) || defined(BENCH)
             case 'r':
@@ -135,7 +175,7 @@ void processArgs(int argc, char* argv[]) {
             case 't':
                 maxTime = atoi(optarg);
                 break;
-#endif                
+#endif
 #if defined(RUNALG)
 			case 'i':
                 input_flag = 1;

@@ -93,36 +93,104 @@ int cmpIntRev(const void *a, const void *b) {
 }
 
 
-void generateSeq(int a[], int len, int modulo, seq_t kind) {
-	// generate
-	for (int i = 0; i < len; i++) a[i] = i % modulo;
-	// permute sequence
-	switch (kind) {
-        case Rand:
+const char* generators1[] = { "G1None", "G1Rand", "G1Saw", "G1Shuffle", NULL };
+const char* generators2[] = { "G2None", "G2Id", "G2Dither", "G2Plateau", NULL };
+const char* generators3[] = { "G3None", "G3Id", "G3Reverse", "G3ReverseFront", "G3ReverseBack", "G3Sort", "G3RandPerm", "G3Swap", NULL };
+
+void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, int p3) {
+
+    // Stage 1
+    switch (gen1_type) {
+        case G1Rand:
+            // RAND PERM in SWAP P ni isto!
+            // RAND PERM gre od konca in generira naključne permutacije z enako verjetnostjo
+            // SWAP P pa naredi p naključnih zamenjav, kjer so ene bolj verjetne kod druge
+            // SWAP P=n ni enako RAND PERM!
+            for (int i = 0; i < len; i++) a[i] = i % modulo;
             while (--len > 0) swap(a, len, random() % (len + 1));
             break;
-        case Zig:
+        case G1Saw:
+            for (int i = 0; i < len; i++) a[i] = (i * p1) % modulo;
             break;
-        case ZigRev:
-			for (int i = 0; i < len / 2; i++) swap(a, i, len-1-i);
-            break;
-        case ZigRevFront:
-            for (int i = 0; i < len / 4; i++) swap(a, i, len/2-i);
-            break;
-        case ZigRevBack:
-            for (int i = 0; i < len / 4; i++) swap(a, len/2+i, len-i);
-            break;
-        case Sort:
-            qsort(a, len, sizeof(int), cmpInt);
-            break;
-        case SortRev:
-            qsort(a, len, sizeof(int), cmpIntRev);
-            break;
-        case Dither:
-			for (int i = 0; i < len; i++) a[i] += i % 5;
+        case G1Shuffle:
+            for (int i = 0, j = 0, k = 1; i < len; i++) a[i] = random() % modulo ? (j += 2) : (k += 2);
             break;
         default:
-            fprintf(stderr, "Wrong sequence pattern (%d).\n", kind);
+            fprintf(stderr, "Wrong stage 1 generator pattern (%d).\n", gen1_type);
             exit(42);
-	}
+    }
+
+    // Stage 2
+    switch (gen2_type) {
+        case G2Id:
+            break;
+        case G2Plateau:
+            for (int i = 0; i < len; i++) a[i] += i < p21 ? p21 : (i > p22 ? p22 : i);
+            break;
+        case G2Dither:
+            for (int i = 0; i < len; i++) a[i] += i % p21;
+            break;
+        default:
+            fprintf(stderr, "Wrong stage 2 generator pattern (%d).\n", gen2_type);
+            exit(42);
+    }
+
+    // Stage 3
+    switch (gen3_type) {
+        case G3Id:
+            break;
+        case G3Reverse:
+            for (int i = 0; i < len / 2; i++) swap(a, i, len-1-i);
+            break;
+        case G3ReverseFront:
+            for (int i = 0; i < len / 4; i++) swap(a, i, len/2-i);
+            break;
+        case G3ReverseBack:
+            for (int i = 0; i < len / 4; i++) swap(a, len/2+i, len-i);
+            break;
+        case G3Sort:
+            qsort(a, len, sizeof(int), cmpInt);
+            break;
+        // TODO Add SortReversed
+        // case SortRev:
+        //    qsort(a, len, sizeof(int), cmpIntRev);
+        //    break;
+        case G3RandPerm:
+            break;
+        case G3Swap:
+            break;
+        default:
+            fprintf(stderr, "Wrong stage 3 generator pattern (%d).\n", gen3_type);
+            exit(42);
+    }
+}
+
+gen1_t str2gen1_t(const char* str) {
+    for (int i = 0; generators1[i] != NULL; i++)
+        if (strcasecmp(generators1[i], str) == 0) return (gen1_t)i;
+    return G1None;
+}
+
+gen2_t str2gen2_t(const char* str) {
+    for (int i = 0; generators2[i] != NULL; i++)
+        if (strcasecmp(generators2[i], str) == 0) return (gen2_t)i;
+    return G2None;
+}
+
+gen3_t str2gen3_t(const char* str) {
+    for (int i = 0; generators3[i] != NULL; i++)
+        if (strcasecmp(generators3[i], str) == 0) return (gen3_t)i;
+    return G3None;
+}
+
+const char* gen1_t2str(const gen1_t gen) {
+    return generators1[gen];
+}
+
+const char* gen2_t2str(const gen2_t gen) {
+    return generators2[gen];
+}
+
+const char* gen3_t2str(const gen3_t gen) {
+    return generators3[gen];
 }

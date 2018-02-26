@@ -18,7 +18,7 @@ void doTime() {
     int* a = malloc(length * sizeof(int));
     timer_reset(&timer);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generateSeq(a, length, modulo, seq);
+        generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter3); // generateSeq(a, length, modulo, seq);
         timer_start(&timer);
         algtime(a, 0, length - 1);
         timer_stop(&timer);
@@ -35,7 +35,7 @@ void doStat() {
     timer_reset(&timer);
     stat_reset(&stat);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generateSeq(a, length, modulo, seq);
+        generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter3); // generateSeq(a, length, modulo, seq);
         stat_start(&stat);
         timer_start(&timer);
         algstat(a, 0, length - 1);
@@ -56,7 +56,8 @@ int main(int argc, char * argv[]) {
 
     printf("%9d ", length);
     printf("%10.0f %10.0f %10.0f %10lu", stat.averageCmps, stat.averageMoves, stat.averageCalls, stat.repeats);
-    printf("%10.0f %10lu\n", timer_get_us(&timer), timer.repeats);
+    printf("%10.0f %10lu", timer_get_us(&timer), timer.repeats);
+    printf("\n");
 
     return 0;
 }
