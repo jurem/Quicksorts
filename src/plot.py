@@ -21,6 +21,12 @@ def plot_it(loc, desc, xlabel, ylabel, df_list):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
 
+    # Set min and max
+    xmax = max(max(ns) for ns, _, _ in df_list)
+    plt.xlim(xmin=0, xmax=xmax)
+    ymax = max(max(df) for _, df, _ in df_list)
+    plt.ylim(ymin=0, ymax=ymax)
+
     for ns, df, label in df_list:
         plt.plot(ns, df, 'x', label=label, linestyle='-')
     plt.legend(loc='best')
