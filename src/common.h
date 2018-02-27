@@ -10,7 +10,8 @@ gen3_t gen3;
 int parameter1;
 int parameter21;
 int parameter22;
-int parameter3;
+double parameter31;
+double parameter32;
 #endif
 int length = 1000;		// length of sequence / pre-reserved space
 
@@ -68,13 +69,13 @@ struct option options[] = {
 
 // command-line short options
 #ifdef GENSEQ
-#define SHORTOPT "hvl:k:m:s:A:B:C:X:Y:Q:Z:"
+#define SHORTOPT "hvl:k:m:s:A:B:C:X:Y:Q:W:Z:"
 #endif
 #ifdef RUNALG
 #define SHORTOPT "hviol:r:t:"
 #endif
 #ifdef BENCH
-#define SHORTOPT "hvl:k:m:s:r:t:A:B:C:X:Y:Q:Z:"
+#define SHORTOPT "hvl:k:m:s:r:t:A:B:C:X:Y:Q:W:Z:"
 #endif
 
 
@@ -114,7 +115,7 @@ void printSettings() {
 #if defined(GENSEQ) || defined(BENCH)
     printf("Input:   length=%d, modulo=%d", length, modulo);
     if (use_seed) printf(", seed=%d", seed); else printf(", seed=rnd");
-    printf(", (%s-%d) (%s-%d-%d) (%s-%d)", gen1_t2str(gen1), parameter1, gen2_t2str(gen2), parameter21, parameter22, gen3_t2str(gen3), parameter3);
+    printf(", (%s-%d) (%s-%d-%d) (%s-%f-%f)", gen1_t2str(gen1), parameter1, gen2_t2str(gen2), parameter21, parameter22, gen3_t2str(gen3), parameter31, parameter32);
     printf("\n");
 #endif
 #if defined(RUNALG) || defined(BENCH)
@@ -164,8 +165,11 @@ void processArgs(int argc, char* argv[]) {
             case 'Q': // p22
                 parameter22 = atoi(optarg);
                 break;
-            case 'Z': // p3
-                parameter3 = atoi(optarg);
+            case 'W': // p31
+                parameter31 = atof(optarg);
+                break;
+            case 'Z': // p32
+                parameter32 = atof(optarg);
                 break;
 #endif
 #if defined(RUNALG) || defined(BENCH)

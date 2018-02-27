@@ -72,6 +72,6 @@ const char* gen1_t2str(const gen1_t gen);
 const char* gen2_t2str(const gen2_t gen);
 const char* gen3_t2str(const gen3_t gen);
 
-void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, int p3);
+void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, double p31, double p32);
 
 #endif

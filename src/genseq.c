@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     srandom(use_seed ? seed : clock());
 
     int* a = (int*)malloc(length * sizeof(int));
-    generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter3);
+    generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter31, parameter32);
     printArray(a, length);
     free(a);
 
