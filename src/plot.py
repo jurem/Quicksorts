@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -23,9 +24,9 @@ def plot_it(loc, desc, xlabel, ylabel, df_list):
 
     # Set min and max
     xmax = max(max(ns) for ns, _, _ in df_list)
-    plt.xlim(xmin=0, xmax=xmax)
+    plt.xlim(xmin=0, xmax=xmax * 1.05)
     ymax = max(max(df) for _, df, _ in df_list)
-    plt.ylim(ymin=0, ymax=ymax)
+    plt.ylim(ymin=0, ymax=ymax * 1.05)
 
     for ns, df, label in df_list:
         plt.plot(ns, df, 'x', label=label, linestyle='-')
@@ -45,17 +46,45 @@ def plot_them(loc, attr, xlabel, ylabel):
 
 def plot_them_and_save(attr, xlabel, ylabel, test_name, loc=None):
     plt.figure(figsize=(16, 9), dpi=80)
-    # plt.tight_layout()
+    plt.tight_layout()
     plot_them(loc, attr, xlabel, ylabel)
-    plt.savefig(PLOT_SAVE_PATH + test_name + "-" + attr + ".png", format='png')
+    plt.savefig(PLOT_SAVE_PATH + test_name + "-" + attr + ".pdf", format='pdf')
+
+    code = """\\begin{figure}[h]
+  \\begin{center}
+    \includegraphics
+      [width=1.1\\textwidth]
+      {../Quicksorts/out-Plots/Random-calls.pdf}
+  \end{center}
+  \caption{Plot Caption}
+  \label{plotLabel}
+\end{figure}"""
+
+    d = {
+        'time': 'Čas izvajanja [ms]',
+        'cmps': 'Št. primerjav',
+        'moves': 'Št. zamenjav',
+        'calls': 'Št. rekurzivnih klicev',
+    }
+
+    print(
+        code.replace("Random-calls.pdf", test_name + "-" + attr + ".pdf")
+            .replace("Plot Caption", test_name + ", " + d[attr].replace("Št.", "Število").lower())
+            .replace("plotLabel", test_name + "_" + attr)
+    )
 
 
 if __name__ == '__main__':
     base_path = "../out-DESKTOP-EDJNGBD/"
     dirs = [
-        ("Tiny", base_path + "tiny--r10-t5/"),
-        ("Norm", base_path + "norm--r100-t1/"),
+        ("Random", base_path + "TR1-tiny-G1Saw-1--G2Id-0-0-G3RandPerm0-0-r100-t1/"),
+        ("Duplicates", base_path + "TR1-tiny-G1Saw-1-0.15-G2Id-0-0-G3RandPerm0-0-r100-t1/"),
+        ("AlmostSorted", base_path + "TR1-tiny-G1Saw-1--G2Id-0-0-G3Swap0.01-0-r100-t1/"),
     ]
+
+    # font = {'family': 'normal', 'weight': 'bold', 'size': 22}
+    # matplotlib.rc('font', **font)
+    matplotlib.rcParams.update({'font.size': 20})
 
     for test_name, path in dirs:
         df_hoare = load_df(path + "QuicksortHoare.csv")
@@ -80,3 +109,4 @@ if __name__ == '__main__':
             plot_them_and_save('cmps', xlabel, "Št. primerjav", test_name)
             plot_them_and_save('moves', xlabel, "Št. premikov", test_name)
             plot_them_and_save('calls', xlabel, "Št. rekurzivnih klicov", test_name)
+            print()
