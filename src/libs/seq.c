@@ -97,17 +97,13 @@ const char* generators1[] = { "G1None", "G1Rand", "G1Saw", "G1Shuffle", NULL };
 const char* generators2[] = { "G2None", "G2Id", "G2Dither", "G2Plateau", NULL };
 const char* generators3[] = { "G3None", "G3Id", "G3Reverse", "G3ReverseFront", "G3ReverseBack", "G3Sort", "G3RandPerm", "G3Swap", NULL };
 
-void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, int p3) {
+void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, double p31, double p32) {
 
     // Stage 1
     switch (gen1_type) {
         case G1Rand:
-            // RAND PERM in SWAP P ni isto!
-            // RAND PERM gre od konca in generira naključne permutacije z enako verjetnostjo
-            // SWAP P pa naredi p naključnih zamenjav, kjer so ene bolj verjetne kod druge
-            // SWAP P=n ni enako RAND PERM!
-            for (int i = 0; i < len; i++) a[i] = i % modulo;
-            while (--len > 0) swap(a, len, random() % (len + 1));
+            for (int i = 0; i < len; i++) a[i] = random() % modulo;
+            // int j = len; while (--j > 0) swap(a, j, random() % (j + 1));
             break;
         case G1Saw:
             for (int i = 0; i < len; i++) a[i] = (i * p1) % modulo;
@@ -140,14 +136,14 @@ void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_typ
         case G3Id:
             break;
         case G3Reverse:
-            for (int i = 0; i < len / 2; i++) swap(a, i, len-1-i);
+            for (int i = p31 * len; i < p32 * len; i++) swap(a, i, len-1-i);
             break;
-        case G3ReverseFront:
+        /*case G3ReverseFront:
             for (int i = 0; i < len / 4; i++) swap(a, i, len/2-i);
             break;
         case G3ReverseBack:
             for (int i = 0; i < len / 4; i++) swap(a, len/2+i, len-i);
-            break;
+            break;*/
         case G3Sort:
             qsort(a, len, sizeof(int), cmpInt);
             break;
@@ -156,8 +152,14 @@ void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_typ
         //    qsort(a, len, sizeof(int), cmpIntRev);
         //    break;
         case G3RandPerm:
+            // RAND PERM in SWAP P ni isto!
+            // RAND PERM gre od konca in generira naključne permutacije z enako verjetnostjo
+            // SWAP P pa naredi p naključnih zamenjav, kjer so ene bolj verjetne kod druge
+            // SWAP P=n ni enako RAND PERM!
+            while (--len > 0) swap(a, len, random() % (len + 1));
             break;
         case G3Swap:
+            // TODO Naredi p_31 random swap-ov!
             break;
         default:
             fprintf(stderr, "Wrong stage 3 generator pattern (%d).\n", gen3_type);
