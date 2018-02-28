@@ -159,7 +159,12 @@ void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_typ
             while (--len > 0) swap(a, len, random() % (len + 1));
             break;
         case G3Swap:
-            // TODO Naredi p_31 random swap-ov!
+            int p = (int)p31;
+            while (--p_31 > 0) {
+                int i = random() % n;
+                int j = random() % n;
+                swap(a, i, j);
+            }
             break;
         default:
             fprintf(stderr, "Wrong stage 3 generator pattern (%d).\n", gen3_type);
