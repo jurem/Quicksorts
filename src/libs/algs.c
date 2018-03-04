@@ -23,7 +23,11 @@ const SortInfo algs[] = {
 	// { "3Way1", qs3Way1 },
 	// { "3Way2", qs3Way2 },
 	// { "3Way3", qs3Way3 },
+    // tri-partite
+	{ "QuicksortTripartiteSimple", timeQuicksortTripartiteSimple, statQuicksortTripartiteSimple },
+	{ "QuicksortTripartiteBentleyMcIlroy", timeQuicksortTripartiteBentleyMcIlroy, statQuicksortTripartiteBentleyMcIlroy },
 	// dual-pivot partitions
+	{ "QuicksortSedgewickDualPivot", timeQuicksortSedgewickDualPivot, statQuicksortSedgewickDualPivot },
 	{ "QuicksortYaroSimple", timeQuicksortYaroSimple, statQuicksortYaroSimple },
 	{ "QuicksortYaro", timeQuicksortYaro, statQuicksortYaro },
 	// triple-pivot partitions

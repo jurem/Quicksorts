@@ -106,9 +106,29 @@
 
 
 // insert here 3-way partitions
+#define SORTNAME QuicksortTripartiteSimple
+#include "do_time.h"
+#include "QuicksortTripartiteSimple.h"
+#include "do_stat.h"
+#include "QuicksortTripartiteSimple.h"
+#undef SORTNAME
+
+#define SORTNAME QuicksortTripartiteBentleyMcIlroy
+#include "do_time.h"
+#include "QuicksortTripartiteBentleyMcIlroy.h"
+#include "do_stat.h"
+#include "QuicksortTripartiteBentleyMcIlroy.h"
+#undef SORTNAME
 
 
 // **************** Dual-pivot partitions
+
+#define SORTNAME QuicksortSedgewickDualPivot
+#include "do_time.h"
+#include "QuicksortSedgewickDualPivot.h"
+#include "do_stat.h"
+#include "QuicksortSedgewickDualPivot.h"
+#undef SORTNAME
 
 #define SORTNAME QuicksortYaroSimple
 #include "do_time.h"
