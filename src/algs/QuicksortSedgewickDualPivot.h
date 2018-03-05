@@ -18,7 +18,7 @@ void FUNNAME(int a[], int left, int right) {
         while (LE(a[i], q)) {
             if (i >= j) { breakOuterLoop = true; break; }
             if (LT(a[i], p)) {
-                a[i1] = a[i]; i1++; a[i] = a[i1];
+                a[i1] = a[i]; i1++; a[i] = a[i1]; MOVE2;
             }
             i++;
         }
@@ -27,19 +27,19 @@ void FUNNAME(int a[], int left, int right) {
         j--;
         while (GE(a[j], p)) {
             if (GT(a[j], q)) {
-                a[j1] = a[j]; j1--; a[j] = a[j1];
+                a[j1] = a[j]; j1--; a[j] = a[j1]; MOVE2;
             }
             if (i >= j) { breakOuterLoop = true; break; }
             j--;
         }
         if (breakOuterLoop) break;
 
-        a[i1] = a[j]; a[j1] = a[i];
+        a[i1] = a[j]; a[j1] = a[i]; MOVE2;
         i1++; j1--;
-        a[i] = a[i1]; a[j] = a[j1];
+        a[i] = a[i1]; a[j] = a[j1]; MOVE2;
     }
 
-    a[i1] = p; a[j1] = q;
+    a[i1] = p; a[j1] = q; MOVE2;
 
 	FUNNAME(a, left, i1 - 1);
 	FUNNAME(a, i1 + 1, j1 - 1);
