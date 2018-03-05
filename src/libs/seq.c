@@ -156,13 +156,16 @@ void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_typ
             // RAND PERM gre od konca in generira naključne permutacije z enako verjetnostjo
             // SWAP P pa naredi p naključnih zamenjav, kjer so ene bolj verjetne kod druge
             // SWAP P=n ni enako RAND PERM!
-            while (--len > 0) swap(a, len, random() % (len + 1));
+            ;
+            int i = len;
+            while (--i > 0) swap(a, i, random() % (len + 1));
             break;
         case G3Swap:
-            int p = (int)p31;
-            while (--p_31 > 0) {
-                int i = random() % n;
-                int j = random() % n;
+            ; // error: a label can only be part of a statement and a declaration is not a statement
+            int k = (int)(p31 * len);
+            while (--k > 0) {
+                int i = random() % len;  // n = len
+                int j = random() % len;
                 swap(a, i, j);
             }
             break;
