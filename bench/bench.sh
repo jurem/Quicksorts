@@ -16,18 +16,19 @@ HOST=${h%%.*}
 OUT="../out-$HOST/"
 
 # Save args
-SIZE=${@:$OPTIND:1}
-GEN1=${@:$OPTIND+1:1}
-GEN2=${@:$OPTIND+2:1}
-GEN3=${@:$OPTIND+3:1}
-P1=${@:$OPTIND+4:1}
-MOD=${@:OPTIND+5:1}
-P21=${@:$OPTIND+6:1}
-P22=${@:$OPTIND+7:1}
-P31=${@:$OPTIND+8:1}
-P32=${@:$OPTIND+9:1}
-REPEAT=${@:$OPTIND+10:1}
-MAXTIME=${@:$OPTIND+11:1}
+NAME=${@:$OPTIND:1}
+SIZE=${@:$OPTIND+1:1}
+GEN1=${@:$OPTIND+2:1}
+GEN2=${@:$OPTIND+3:1}
+GEN3=${@:$OPTIND+4:1}
+P1=${@:$OPTIND+5:1}
+MOD=${@:OPTIND+6:1}
+P21=${@:$OPTIND+7:1}
+P22=${@:$OPTIND+8:1}
+P31=${@:$OPTIND+9:1}
+P32=${@:$OPTIND+10:1}
+REPEAT=${@:$OPTIND+11:1}
+MAXTIME=${@:$OPTIND+12:1}
 
 # Set default value if arg empty
 if [[ -z "$SIZE" ]]; then SIZE="norm"; fi
@@ -86,18 +87,32 @@ function do_one {
 }
 
 ID="$SIZE"-"$GEN1"-"$P1"-"$MOD"-"$GEN2"-"$P21"-"$P22"-"$GEN3""$P31"-"$P32"-r"$REPEAT"-"t$MAXTIME"
-repdir="$OUT/TR1-$ID"
+# NAME="TR1"
+repdir="$OUT/$NAME-$ID"
 mkdir -p "$repdir"
 
-algs="QuicksortLomuto"
+# algs="QuicksortLomuto"
 #algs=$(echo Quicksort{Lomuto,LomutoMoves})
 #algs=$(echo Quicksort{Hoare,Hoare1,Wirth})
 #algs=$(echo Quicksort{Sedgewick,SedgewickMoves,SedgewickSentinels})
 #algs=$(echo Quicksort{Sin,SinSentinels})
 #algs=$(echo Quicksort{YaroSimple,Yaro})
 #algs=$(echo Quicksort3Pivot{0,1,2,3})
+#algs="QuicksortSedgewickDualPivot"
+#algs="QuicksortTripartiteSimple"
+#algs="QuicksortTripartiteBentleyMcIlroy"
+# algs="Quicksort3Pivot3"
 
-algs=$(echo Quicksort{Lomuto,LomutoMoves,Hoare,Hoare1,Wirth,Sedgewick,SedgewickMoves,SedgewickSentinels,Sin,SinSentinels,YaroSimple,Yaro,3Pivot0,3Pivot1,3Pivot2,3Pivot3})
+# All
+# algs=$(echo Quicksort{Lomuto,LomutoMoves,Hoare,Hoare1,Wirth,Sedgewick,SedgewickMoves,SedgewickSentinels,Sin,SinSentinels,YaroSimple,Yaro,3Pivot0,3Pivot1,3Pivot2,3Pivot3,SedgewickDualPivot,TripartiteSimple,TripartiteBentleyMcIlroy})
+
+# All relevant
+algs=$(echo Quicksort{Lomuto,Hoare,Wirth,Sedgewick,YaroSimple,Yaro,3Pivot3,SedgewickDualPivot,TripartiteSimple,TripartiteBentleyMcIlroy})
+
+# Test
+# algs=$(echo Quicksort{Hoare,Yaro,3Pivot3})
+# algs=$(echo Quicksort{Yaro,3Pivot3})
+# algs="QuicksortYaro"
 
 
 echo "Test platform: $HOST"
