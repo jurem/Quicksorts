@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	if (right <= left) return;
 	CALLED;
 	int p = a[left];
@@ -6,6 +6,12 @@ void FUNNAME(int a[], int left, int right) {
 	for (int i = left + 1; i <= right; i++)
 		if LT(a[i], p) SWAP(a, ++k, i);
 	SWAP(a, left, k);
-	FUNNAME(a, left, k - 1);
-	FUNNAME(a, k + 1, right);
+	FUN(a, left, k - 1);
+	FUN(a, k + 1, right);
 }
+
+
+/*
+Reference: CLRS
+Nico Lomuto's single loop partition
+*/

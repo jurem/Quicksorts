@@ -1,10 +1,11 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 /*	int* b = (int*)malloc(length * sizeof(int));
 	CONCAT(FUNNAME, 2)(a, b, left, right);
 */
+	return;
 }
 
-int* CONCAT(FUNNAME, 2)(int a[], int b[], int left, int right) {
+int* CONCAT(FUN, 2)(int a[], int b[], int left, int right) {
 	if (right <= left) return a;
 	CALLED;
 	int p = a[left];
@@ -18,6 +19,7 @@ int* CONCAT(FUNNAME, 2)(int a[], int b[], int left, int right) {
 	}
 	b[l] = p;
 	MOVE1;
-	CONCAT(FUNNAME, 2)(b, a, left, l - 1);
-	CONCAT(FUNNAME, 2)(b, a, r + 1, right);	
+	CONCAT(FUN, 2)(b, a, left, l - 1);
+	CONCAT(FUN, 2)(b, a, r + 1, right);	
+	return 0;
 }

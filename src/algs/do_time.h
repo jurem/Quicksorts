@@ -1,6 +1,8 @@
 #include "do_undef.h"
 
-#define FUNNAME	CONCAT(time, SORTNAME)
+#define ALG_PREFIX TIME_PREFIX
+#define FUN FUN_TIME(ALG_NAME)
+
 
 // compares
 #define CMP1

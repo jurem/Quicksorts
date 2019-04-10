@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	// p | <= p | ? | >= p
 	if (right <= left) return;
 	CALLED;
@@ -12,6 +12,6 @@ void FUNNAME(int a[], int left, int right) {
         }
 	}
     SWAP(a, left, r);
-	FUNNAME(a, left, r - 1);
-	FUNNAME(a, r + 1, right);
+	FUN(a, left, r - 1);
+	FUN(a, r + 1, right);
 }

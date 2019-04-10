@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	if (right <= left) return;
 	CALLED;
 	// p, q, r
@@ -10,7 +10,7 @@ void FUNNAME(int a[], int left, int right) {
 	// l, i, j, g
 	int l = left + 2, i = l, g = right - 1, j = g;
     int v, u;
-	while (1) {
+	while (true) {
         while (LT(v = a[i], q)) {
             if (LT(v, p)) SWAP(a, l++, i);
             i++;
@@ -36,8 +36,8 @@ void FUNNAME(int a[], int left, int right) {
 	SWAP(a, left, --l);
 	// r --> na pravo mesto (g)
 	SWAP(a, right, ++g);
-	FUNNAME(a, left, l - 1);
-	FUNNAME(a, l + 1, i - 1);
-	FUNNAME(a, i + 1, g - 1);
-	FUNNAME(a, g + 1, right);
+	FUN(a, left, l - 1);
+	FUN(a, l + 1, i - 1);
+	FUN(a, i + 1, g - 1);
+	FUN(a, g + 1, right);
 }

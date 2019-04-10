@@ -1,6 +1,8 @@
 #include "do_undef.h"
 
-#define FUNNAME	CONCAT(stat, SORTNAME)
+#define ALG_PREFIX STAT_PREFIX
+#define FUN FUN_STAT(ALG_NAME)
+
 
 // compares
 #define CMP1			alg_cmps++

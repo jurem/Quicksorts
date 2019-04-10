@@ -7,34 +7,34 @@
 
 
 const SortInfo algs[] = {
-	{ "Insertion", timeInsertion, statInsertion },
+	{ "Insertion", time_Insertion, stat_Insertion },
+	{ "Insertion_m", time_Insertion_m, stat_Insertion_m },
 //    { "radix", radix },
 	// single-pivot partitions
-	{ "QuicksortLomuto", timeQuicksortLomuto, statQuicksortLomuto },
-	{ "QuicksortLomutoMoves", timeQuicksortLomutoMoves, statQuicksortLomutoMoves },
-	{ "QuicksortHoare",	timeQuicksortHoare, statQuicksortHoare },
-	{ "QuicksortHoare1", timeQuicksortHoare1, statQuicksortHoare1 },
-	{ "QuicksortSedgewick", timeQuicksortSedgewick, statQuicksortSedgewick },
-	{ "QuicksortSedgewickMoves", timeQuicksortSedgewickMoves, statQuicksortSedgewickMoves },
-	{ "QuicksortSedgewickSentinels", timeQuicksortSedgewickSentinels, statQuicksortSedgewickSentinels },
-	{ "QuicksortWirth", timeQuicksortWirth, statQuicksortWirth },
-	{ "QuicksortSin", timeQuicksortSin, statQuicksortSin },
-	{ "QuicksortSinSentinels", timeQuicksortSinSentinels, statQuicksortSinSentinels },
-	// { "3Way1", qs3Way1 },
-	// { "3Way2", qs3Way2 },
-	// { "3Way3", qs3Way3 },
-    // tri-partite
-	{ "QuicksortTripartiteSimple", timeQuicksortTripartiteSimple, statQuicksortTripartiteSimple },
-	{ "QuicksortTripartiteBentleyMcIlroy", timeQuicksortTripartiteBentleyMcIlroy, statQuicksortTripartiteBentleyMcIlroy },
+	{ "QuickLomuto", time_QuickLomuto, stat_QuickLomuto },
+	{ "QuickLomuto_m", time_QuickLomuto_m, stat_QuickLomuto_m },
+	{ "QuickHoare",	time_QuickHoare, stat_QuickHoare },
+	{ "QuickWirth", time_QuickWirth, stat_QuickWirth },
+	{ "QuickWirth_1", time_QuickWirth_1, stat_QuickWirth_1 },
+	{ "QuickSedgewick", time_QuickSedgewick, stat_QuickSedgewick },
+	{ "QuickSedgewick_m", time_QuickSedgewick_m, stat_QuickSedgewick_m },
+	{ "QuickSedgewick_s", time_QuickSedgewick_s, stat_QuickSedgewick_s },
+    // 3-way single-pivot partitions
+	{ "Quick3Way", time_Quick3Way, stat_Quick3Way },
+	{ "Quick3WayBentleyMcIlroy", time_Quick3WayBentleyMcIlroy, stat_Quick3WayBentleyMcIlroy },
 	// dual-pivot partitions
-	{ "QuicksortSedgewickDualPivot", timeQuicksortSedgewickDualPivot, statQuicksortSedgewickDualPivot },
-	{ "QuicksortYaroSimple", timeQuicksortYaroSimple, statQuicksortYaroSimple },
-	{ "QuicksortYaro", timeQuicksortYaro, statQuicksortYaro },
+	{ "Quick2PivotSedgewick", time_Quick2PivotSedgewick, stat_Quick2PivotSedgewick },
+	{ "Quick2Pivot", time_Quick2Pivot, stat_Quick2Pivot },
+	{ "Quick2PivotYaroslavsky", time_Quick2PivotYaroslavsky, stat_Quick2PivotYaroslavsky },
 	// triple-pivot partitions
-	{ "Quicksort3Pivot0", timeQuicksort3Pivot0, statQuicksort3Pivot0 },
-	{ "Quicksort3Pivot1", timeQuicksort3Pivot1, statQuicksort3Pivot1 },
-	{ "Quicksort3Pivot2", timeQuicksort3Pivot2, statQuicksort3Pivot2 },
-	{ "Quicksort3Pivot3", timeQuicksort3Pivot3, statQuicksort3Pivot3 },
+	{ "Quick3Pivot_0", time_Quick3Pivot_0, stat_Quick3Pivot_0 },
+	{ "Quick3Pivot_1", time_Quick3Pivot_1, stat_Quick3Pivot_1 },
+	{ "Quick3Pivot_2", time_Quick3Pivot_2, stat_Quick3Pivot_2 },
+	{ "Quick3Pivot_3", time_Quick3Pivot_3, stat_Quick3Pivot_3 },
+	// other
+	{ "QuickSin", time_QuickSin, stat_QuickSin },
+	{ "QuickSin_s", time_QuickSin_s, stat_QuickSin_s },
+	{ "QuickAHU", time_QuickAHU, stat_QuickAHU },
 	// { "msIter", msIter },
 	{ 0, 0, 0 }
 };

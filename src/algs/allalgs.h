@@ -8,179 +8,193 @@
 //
 #define CONCAT3(x, y, z) CONCAT(CONCAT(x, y), z)
 
+#define	TIME_PREFIX time_
+#define	STAT_PREFIX stat_
+#define FUN_NAME(prefix, name) CONCAT(prefix, name)
+#define FUN_TIME(name) FUN_NAME(TIME_PREFIX, name)
+#define FUN_STAT(name) FUN_NAME(STAT_PREFIX, name)
 
-// **************** Straight sorts
 
-#define SORTNAME Insertion
+// **************** Insertion sort
+
+#define ALG_NAME Insertion
 #include "do_time.h"
 #include "Insertion.h"
 #include "do_stat.h"
 #include "Insertion.h"
-#undef SORTNAME
+#undef ALG_NAME
 
-
-// **************** Lomuto's partitions
-// p | < p | >= p | ?
-
-#define SORTNAME QuicksortLomuto
+#define ALG_NAME Insertion_m
 #include "do_time.h"
-#include "QuicksortLomuto.h"
+#include "Insertion_m.h"
 #include "do_stat.h"
-#include "QuicksortLomuto.h"
-#undef SORTNAME
+#include "Insertion_m.h"
+#undef ALG_NAME
 
+// **************** Quicksort single pivot partitions
 
-#define SORTNAME QuicksortLomutoMoves
+#define ALG_NAME QuickLomuto
 #include "do_time.h"
-#include "QuicksortLomutoMoves.h"
+#include "QuickLomuto.h"
 #include "do_stat.h"
-#include "QuicksortLomutoMoves.h"
-#undef SORTNAME
+#include "QuickLomuto.h"
+#undef ALG_NAME
 
-
-// **************** Crossing pointer partitions
-// p | <= p | ? | >= p
-
-#define SORTNAME QuicksortHoare
+#define ALG_NAME QuickLomuto_m
 #include "do_time.h"
-#include "QuicksortHoare.h"
+#include "QuickLomuto_m.h"
 #include "do_stat.h"
-#include "QuicksortHoare.h"
-#undef SORTNAME
+#include "QuickLomuto_m.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortHoare1
+#define ALG_NAME QuickHoare
 #include "do_time.h"
-#include "QuicksortHoare1.h"
+#include "QuickHoare.h"
 #include "do_stat.h"
-#include "QuicksortHoare1.h"
-#undef SORTNAME
+#include "QuickHoare.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortSedgewick
+#define ALG_NAME QuickWirth
 #include "do_time.h"
-#include "QuicksortSedgewick.h"
+#include "QuickWirth.h"
 #include "do_stat.h"
-#include "QuicksortSedgewick.h"
-#undef SORTNAME
+#include "QuickWirth.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortSedgewickMoves
+#define ALG_NAME QuickWirth_1
 #include "do_time.h"
-#include "QuicksortSedgewickMoves.h"
+#include "QuickWirth_1.h"
 #include "do_stat.h"
-#include "QuicksortSedgewickMoves.h"
-#undef SORTNAME
+#include "QuickWirth_1.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortSedgewickSentinels
+#define ALG_NAME QuickSedgewick
 #include "do_time.h"
-#include "QuicksortSedgewickSentinels.h"
+#include "QuickSedgewick.h"
 #include "do_stat.h"
-#include "QuicksortSedgewickSentinels.h"
-#undef SORTNAME
+#include "QuickSedgewick.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortWirth
+#define ALG_NAME QuickSedgewick_m
 #include "do_time.h"
-#include "QuicksortWirth.h"
+#include "QuickSedgewick_m.h"
 #include "do_stat.h"
-#include "QuicksortWirth.h"
-#undef SORTNAME
+#include "QuickSedgewick_m.h"
+#undef ALG_NAME
 
-
-#define SORTNAME QuicksortSin
+#define ALG_NAME QuickSedgewick_s
 #include "do_time.h"
-#include "QuicksortSin.h"
+#include "QuickSedgewick_s.h"
 #include "do_stat.h"
-#include "QuicksortSin.h"
-#undef SORTNAME
+#include "QuickSedgewick_s.h"
+#undef ALG_NAME
 
+// **************** Quicksort 3-way partitions
 
-#define SORTNAME QuicksortSinSentinels
+#define ALG_NAME Quick3Way
 #include "do_time.h"
-#include "QuicksortSinSentinels.h"
+#include "Quick3Way.h"
 #include "do_stat.h"
-#include "QuicksortSinSentinels.h"
-#undef SORTNAME
+#include "Quick3Way.h"
+#undef ALG_NAME
 
-
-// insert here 3-way partitions
-#define SORTNAME QuicksortTripartiteSimple
+#define ALG_NAME Quick3WayBentleyMcIlroy
 #include "do_time.h"
-#include "QuicksortTripartiteSimple.h"
+#include "Quick3WayBentleyMcIlroy.h"
 #include "do_stat.h"
-#include "QuicksortTripartiteSimple.h"
-#undef SORTNAME
-
-#define SORTNAME QuicksortTripartiteBentleyMcIlroy
-#include "do_time.h"
-#include "QuicksortTripartiteBentleyMcIlroy.h"
-#include "do_stat.h"
-#include "QuicksortTripartiteBentleyMcIlroy.h"
-#undef SORTNAME
-
+#include "Quick3WayBentleyMcIlroy.h"
+#undef ALG_NAME
 
 // **************** Dual-pivot partitions
 
-#define SORTNAME QuicksortSedgewickDualPivot
+#define ALG_NAME Quick2PivotSedgewick
 #include "do_time.h"
-#include "QuicksortSedgewickDualPivot.h"
+#include "Quick2PivotSedgewick.h"
 #include "do_stat.h"
-#include "QuicksortSedgewickDualPivot.h"
-#undef SORTNAME
+#include "Quick2PivotSedgewick.h"
+#undef ALG_NAME
 
-#define SORTNAME QuicksortYaroSimple
+#define ALG_NAME Quick2Pivot
 #include "do_time.h"
-#include "QuicksortYaroSimple.h"
+#include "Quick2Pivot.h"
 #include "do_stat.h"
-#include "QuicksortYaroSimple.h"
-#undef SORTNAME
+#include "Quick2Pivot.h"
+#undef ALG_NAME
 
 
-#define SORTNAME QuicksortYaro
+#define ALG_NAME Quick2PivotYaroslavsky
 #include "do_time.h"
-#include "QuicksortYaro.h"
+#include "Quick2PivotYaroslavsky.h"
 #include "do_stat.h"
-#include "QuicksortYaro.h"
-#undef SORTNAME
+#include "Quick2PivotYaroslavsky.h"
+#undef ALG_NAME
 
 // **************** Triple-pivot partitions
 
-#define SORTNAME Quicksort3Pivot0
+#define ALG_NAME Quick3Pivot_0
 #include "do_time.h"
-#include "Quicksort3Pivot0.h"
+#include "Quick3Pivot_0.h"
 #include "do_stat.h"
-#include "Quicksort3Pivot0.h"
-#undef SORTNAME
+#include "Quick3Pivot_0.h"
+#undef ALG_NAME
 
-#define SORTNAME Quicksort3Pivot1
+#define ALG_NAME Quick3Pivot_1
 #include "do_time.h"
-#include "Quicksort3Pivot1.h"
+#include "Quick3Pivot_1.h"
 #include "do_stat.h"
-#include "Quicksort3Pivot1.h"
-#undef SORTNAME
+#include "Quick3Pivot_1.h"
+#undef ALG_NAME
 
-#define SORTNAME Quicksort3Pivot2
+#define ALG_NAME Quick3Pivot_2
 #include "do_time.h"
-#include "Quicksort3Pivot2.h"
+#include "Quick3Pivot_2.h"
 #include "do_stat.h"
-#include "Quicksort3Pivot2.h"
-#undef SORTNAME
+#include "Quick3Pivot_2.h"
+#undef ALG_NAME
 
-#define SORTNAME Quicksort3Pivot3
+#define ALG_NAME Quick3Pivot_3
 #include "do_time.h"
-#include "Quicksort3Pivot3.h"
+#include "Quick3Pivot_3.h"
 #include "do_stat.h"
-#include "Quicksort3Pivot3.h"
-#undef SORTNAME
+#include "Quick3Pivot_3.h"
+#undef ALG_NAME
+
+// **************** Other
+
+#define ALG_NAME QuickSin
+#include "do_time.h"
+#include "QuickSin.h"
+#include "do_stat.h"
+#include "QuickSin.h"
+#undef ALG_NAME
+
+#define ALG_NAME QuickSin_s
+#include "do_time.h"
+#include "QuickSin_s.h"
+#include "do_stat.h"
+#include "QuickSin_s.h"
+#undef ALG_NAME
+
+#define ALG_NAME QuickAHU
+#include "do_time.h"
+#include "QuickAHU.h"
+#include "do_stat.h"
+#include "QuickAHU.h"
+#undef ALG_NAME
+
+
+
+
+
+
 
 // **************** Out-place quicksort
 
-#define SORTNAME QuicksortOut
+#define ALG_NAME QuickOut
 #include "do_time.h"
 #include "QuicksortOut.h"
 #include "do_stat.h"
 #include "QuicksortOut.h"
-#undef SORTNAME
+#undef ALG_NAME
+
 #endif

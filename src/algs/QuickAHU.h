@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	if (right <= left) return;
 	CALLED;
 	int p = a[left];
@@ -17,6 +17,6 @@ void FUNNAME(int a[], int left, int right) {
 	// However, if l == left in which case S_1 = {}, we must first remove at least one instance of a from (S_2 u S_3).
 	// It is convenient to remove the element on which we partitioned.
 	if (l == left) r++;
-	FUNNAME(a, left, l - 1); // S_1 with indices left, ..., l - 1
-	FUNNAME(a, r + 1, right); // (S_2 u S_3) with indices r + 1, ..., right
+	FUN(a, left, l - 1); // S_1 with indices left, ..., l - 1
+	FUN(a, r + 1, right); // (S_2 u S_3) with indices r + 1, ..., right
 }

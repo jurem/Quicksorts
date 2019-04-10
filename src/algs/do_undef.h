@@ -1,6 +1,7 @@
 // line-spacing matched with do_stat.h & do_time.h
 
-#undef FUNNAME
+#undef ALG_PREFIX
+#undef FUN
 
 // compares
 #undef CMP1

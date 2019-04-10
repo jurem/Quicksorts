@@ -1,8 +1,8 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	// p | < p | p <= . <= q | ? | > q | q
 	if (right <= left) return;
 	CALLED;
-	if (a[left] > a[right]) SWAP(a, left, right);
+	if GT(a[left], a[right]) SWAP(a, left, right);
 	int p = a[left], q = a[right];
 	int l = left + 1, k = l, r = right - 1;
 	while (k <= r) {
@@ -12,8 +12,8 @@ void FUNNAME(int a[], int left, int right) {
 	}
 	SWAP(a, left, --l);
 	SWAP(a, ++r, right);
-	FUNNAME(a, left, l - 1);
+	FUN(a, left, l - 1);
 	//if LT(a[l], a[r])
-    FUNNAME(a, l + 1, r - 1);
-	FUNNAME(a, r + 1, right);
+    FUN(a, l + 1, r - 1);
+	FUN(a, r + 1, right);
 }

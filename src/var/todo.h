@@ -1,20 +1,3 @@
-// <= p | ? | >= p
-void FUNNAME(int a[], int left, int right) {
-	if (right <= left) return;
-	CALLED;
-	int p = a[left];
-	int l = left, r = right;
-	while (l <= r) {
-		while LT(a[l], p) l++;
-		while GT(a[r], p) r--;
-		if (l > r) break;
-		SWAP(a, l++, r--);
-	}
-	FUNNAME(a, left, r);
-	FUNNAME(a, l, right);
-}
-
-
 /*
 another variant from
 http://www.roseindia.net/java/beginners/arrayexamples/QuickSort.shtml

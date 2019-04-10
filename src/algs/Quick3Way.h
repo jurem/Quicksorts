@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	if (right <= left) return;
 	CALLED;
 	int p = a[left];
@@ -8,6 +8,6 @@ void FUNNAME(int a[], int left, int right) {
 		else if (GT(a[k], p)) SWAP(a, k, r--);
 		else k++;
 	};
-	FUNNAME(a, left, l - 1);
-	FUNNAME(a, r + 1, right);
+	FUN(a, left, l - 1);
+	FUN(a, r + 1, right);
 }

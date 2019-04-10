@@ -1,4 +1,4 @@
-void FUNNAME(int a[], int left, int right) {
+void FUN(int a[], int left, int right) {
 	if (right <= left) return;
 	CALLED;
 	// p, q, r
@@ -9,32 +9,38 @@ void FUNNAME(int a[], int left, int right) {
 	int p = a[left], q = a[left + 1], r = a[right];
 	// l, i, j, g
 	int l = left + 2, i = l, g = right - 1, j = g;
-	while (i <= j) {
-        if LT(a[i], p) SWAP(a, l++, i);
-        else if GT(a[i], q) {
-            while (i <= j) {
-                if GT(a[j], r) SWAP(a, j--, g--);
-                else if GT(a[j], q) j--;
-                else break;
+	while (true) {
+		int v = a[i];
+		if LT(v, q) {
+			if LT(v, p) SWAP(a, l++, i);
+			i++;
+		} else {
+            int u;
+            while (LT(q, u = a[j])) {
+                if (GT(u, r)) SWAP(a, j, g--);
+                j--;
             }
-            // a[i] >= q, a[j] <= q
             if (i >= j) break;
             SWAP(a, i, j);
-            if LT(a[i], p) SWAP(a, l++, i);
-            if GT(a[j], r) SWAP(a, j, g--);
+            if LT(u, p) SWAP(a, l++, i);
+            if GT(v, r) SWAP(a, j, g--);
+            i++;
             j--;
 		}
-        i++;
 	}
-	// q -> na pravo mesto (i)
+    if (i == j) {
+        if GT(a[i], r) SWAP(a, j, g--);
+        j--;
+    }
+    // q -> na pravo mesto (i)
 	if (l < i) { SWAP(a, left+1, --i); SWAP(a, left+1, --l); }
 	else { SWAP(a, left+1, --i); l--; }
 	// p -> na pravo mesto (l)
 	SWAP(a, left, --l);
 	// r --> na pravo mesto (g)
 	SWAP(a, right, ++g);
-	FUNNAME(a, left, l - 1);
-	FUNNAME(a, l + 1, i - 1);
-	FUNNAME(a, i + 1, g - 1);
-	FUNNAME(a, g + 1, right);
+	FUN(a, left, l - 1);
+	FUN(a, l + 1, i - 1);
+	FUN(a, i + 1, g - 1);
+	FUN(a, g + 1, right);
 }
