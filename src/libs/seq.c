@@ -54,35 +54,6 @@ int checkArraySorted(int a[], int n) {
 }
 
 
-const char* sequences[] = {
-    "None",
-    "Rand",
-    "Zig", "ZigRev", "ZigRevFront", "ZigRevBack",
-    "Sort", "SortRev",
-    "Dither",
-    NULL
-};
-
-
-seq_t str2seq(const char* str) {
-    for (int i = 0; sequences[i] != NULL; i++)
-        if (strcasecmp(sequences[i], str) == 0) return (seq_t)i;
-    return None;
-}
-
-
-const char* seq2str(const seq_t seq) {
-    return sequences[seq];
-}
-
-
-void printSequences(const char *prefix) {
-    printf("%s", prefix);
-    for (seq_t i = Rand; i <= Dither; i++) printf("%s ", seq2str(i));
-    printf("\n");
-}
-
-
 int cmpInt(const void *a, const void *b) {
 	return *(const int*)a - *(const int *)b;
 }
@@ -93,114 +64,182 @@ int cmpIntRev(const void *a, const void *b) {
 }
 
 
-const char* generators1[] = { "G1None", "G1Rand", "G1Saw", "G1Shuffle", NULL };
-const char* generators2[] = { "G2None", "G2Id", "G2Dither", "G2Plateau", NULL };
-const char* generators3[] = { "G3None", "G3Id", "G3Reverse", "G3ReverseFront", "G3ReverseBack", "G3Sort", "G3RandPerm", "G3Swap", NULL };
+void printStrs(const char* strs[]) {
+    for (int i = 0; strs[i] != NULL; i++) printf("%s ", strs[i]);
+    printf("\n");
+}
 
-void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, double p31, double p32) {
 
-    // Stage 1
-    switch (gen1_type) {
-        case G1Rand:
-            for (int i = 0; i < len; i++) a[i] = random() % modulo;
-            // int j = len; while (--j > 0) swap(a, j, random() % (j + 1));
+void printHints(const char* strs[], const char* hints[]) {
+    for (int i = 0; strs[i] != NULL; i++) printf("\t%s\t%s\n", strs[i], hints[i]);
+    printf("\n");
+}
+
+
+const char* form_strs[] = {
+    "Rand", "Saw", "Twine", NULL
+};
+const char* form_hints[] = {
+    "Random numbers.",
+    "Saw pattern with a given slope.",
+    "Random intertwining of two increasing sequences",
+    NULL
+};
+
+
+const char* form2str(const form_t form) {
+    return form_strs[form];
+}
+
+
+form_t str2form(const char* str) {
+    for (int i = 0; form_strs[i] != NULL; i++)
+        if (strcasecmp(form_strs[i], str) == 0) return (form_t)i;
+    return -1;
+}
+
+
+void printForms() {
+    printStrs(form_strs);
+}
+
+
+void printFormsHints() {
+    printHints(form_strs, form_hints);
+}
+
+
+const char* deform_strs[] = { "Id", "Dither", "Bound", NULL };
+const char* deform_hints[] = { "No deformation", "Dithering", "Bound", NULL };
+
+
+const char* deform2str(const deform_t deform) {
+    return deform_strs[deform];
+}
+
+
+deform_t str2deform(const char* str) {
+    for (int i = 0; deform_strs[i] != NULL; i++)
+        if (strcasecmp(deform_strs[i], str) == 0) return (deform_t)i;
+    return -1;
+}
+
+
+void printDeforms() {
+    printStrs(deform_strs);
+}
+
+
+const char* shape_strs[] = { "Pass", "Reverse", "Sort", "SortReverse", "Shuffle", "Jumble", NULL };
+
+
+const char* shape2str(const shape_t shape) {
+    return shape_strs[shape];
+}
+
+
+shape_t str2shape(const char* str) {
+    for (int i = 0; shape_strs[i] != NULL; i++)
+        if (strcasecmp(shape_strs[i], str) == 0) return (shape_t)i;
+    return -1;
+}
+
+
+void printShapes() {
+    printStrs(shape_strs);
+}
+
+
+void defaultGen(gen_t *gen) {
+    gen->form = Rand;
+    gen->range = 10;
+    gen->offset = 0;
+    gen->slope = 3;
+    gen->deform = Id;
+    gen->lo = 0;
+    gen->hi = 10;
+    gen->shape = Pass;
+    gen->p1 = 0;
+    gen->p2 = 1;
+}
+
+
+void generateSeq(int a[], int len, gen_t *gen) {
+    // Stage 1: form numbers
+    switch (gen->form) {
+        case Rand:
+            for (int i = 0; i < len; i++)
+                a[i] = gen->offset + random() % gen->range;
             break;
-        case G1Saw:
-            for (int i = 0; i < len; i++) a[i] = (i * p1) % modulo;
+        case Saw:
+            for (int i = 0; i < len; i++)
+                a[i] = gen->offset + (i * gen->slope) % gen->range;
             break;
-        case G1Shuffle:
-            for (int i = 0, j = 0, k = 1; i < len; i++) a[i] = random() % modulo ? (j += 2) : (k += 2);
+        case Twine:
+            for (int i = 0, j = 0, k = 1; i < len; i++)
+                a[i] = gen->offset + ((random() % gen->slope) ? (j += 2) : (k += 2)) % gen->range;
             break;
-        default:
-            fprintf(stderr, "Wrong stage 1 generator pattern (%d).\n", gen1_type);
-            exit(42);
     }
-
-    // Stage 2
-    switch (gen2_type) {
-        case G2Id:
+    // Stage 2: deform numbers
+    switch (gen->deform) {
+        case Id:
             break;
-        case G2Plateau:
-            for (int i = 0; i < len; i++) a[i] += i < p21 ? p21 : (i > p22 ? p22 : i);
+        case Dither:
+            for (int i = 0; i < len; i++)
+                a[i] += gen->lo + i % gen->hi;
             break;
-        case G2Dither:
-            for (int i = 0; i < len; i++) a[i] += i % p21;
+        case Bound:
+            for (int i = 0; i < len; i++)
+                a[i] = i < gen->lo ? gen->lo : (i > gen->hi ? gen->hi : i);
             break;
-        default:
-            fprintf(stderr, "Wrong stage 2 generator pattern (%d).\n", gen2_type);
-            exit(42);
     }
-
-    // Stage 3
-    switch (gen3_type) {
-        case G3Id:
+    // Stage 3: shape
+    switch (gen->shape) {
+        case Pass:
             break;
-        case G3Reverse:
-            for (int i = p31 * len; i < p32 * len; i++) swap(a, i, len-1-i);
+        case Reverse: {
+            int b = gen->p1 * len;
+            int e = gen->p2 * len;
+            for (int i = b; i < (b + e) / 2; i++) swap(a, i, b+e-1-i);
             break;
-        /*case G3ReverseFront:
-            for (int i = 0; i < len / 4; i++) swap(a, i, len/2-i);
-            break;
-        case G3ReverseBack:
-            for (int i = 0; i < len / 4; i++) swap(a, len/2+i, len-i);
-            break;*/
-        case G3Sort:
+        }
+        case Sort:
             qsort(a, len, sizeof(int), cmpInt);
             break;
-        // TODO Add SortReversed
-        // case SortRev:
-        //    qsort(a, len, sizeof(int), cmpIntRev);
-        //    break;
-        case G3RandPerm:
+        case SortReverse:
+            qsort(a, len, sizeof(int), cmpIntRev);
+            break;
+        case Shuffle: {
+            int i = len;
+            while (--i > 0) swap(a, i, random() % (len + 1));
+            break;
+        }
+        case Jumble: {
+            int k = (int)(gen->p1 * len);
+            while (--k > 0)
+                swap(a, random() % len, random() % len);
+            break;
+        }
+        default:
+            fprintf(stderr, "Wrong stage 3 generator pattern (%d).\n", gen->shape);
+            exit(42);
+    }
+}
+
             // RAND PERM in SWAP P ni isto!
             // RAND PERM gre od konca in generira naključne permutacije z enako verjetnostjo
             // SWAP P pa naredi p naključnih zamenjav, kjer so ene bolj verjetne kod druge
             // SWAP P=n ni enako RAND PERM!
-            ;
-            int i = len;
-            while (--i > 0) swap(a, i, random() % (len + 1));
-            break;
-        case G3Swap:
-            ; // error: a label can only be part of a statement and a declaration is not a statement
-            int k = (int)(p31 * len);
-            while (--k > 0) {
-                int i = random() % len;  // n = len
-                int j = random() % len;
-                swap(a, i, j);
-            }
-            break;
-        default:
-            fprintf(stderr, "Wrong stage 3 generator pattern (%d).\n", gen3_type);
-            exit(42);
-    }
-}
 
-gen1_t str2gen1_t(const char* str) {
-    for (int i = 0; generators1[i] != NULL; i++)
-        if (strcasecmp(generators1[i], str) == 0) return (gen1_t)i;
-    return G1None;
-}
+/*
+To get Bentley's (Engineering ..) sequences:
+sawtooth: -FSaw -Rm -O0 -P1
+rand: -FRand -R$m -O0
+stagger: -FSaw -R$n -O0 -P$((m+1))
+plateau: -FSaw -R0 -O0 -P1 -DPlateau --lo=0 --hi=$m
+shuffle: -FTwine -R0 -O0 -P$m
 
-gen2_t str2gen2_t(const char* str) {
-    for (int i = 0; generators2[i] != NULL; i++)
-        if (strcasecmp(generators2[i], str) == 0) return (gen2_t)i;
-    return G2None;
-}
+ReverseFront: -SReverse -B0 -E0.5
+ReverseBack: -SReverse -B0.5 E1
 
-gen3_t str2gen3_t(const char* str) {
-    for (int i = 0; generators3[i] != NULL; i++)
-        if (strcasecmp(generators3[i], str) == 0) return (gen3_t)i;
-    return G3None;
-}
-
-const char* gen1_t2str(const gen1_t gen) {
-    return generators1[gen];
-}
-
-const char* gen2_t2str(const gen2_t gen) {
-    return generators2[gen];
-}
-
-const char* gen3_t2str(const gen3_t gen) {
-    return generators3[gen];
-}
+*/

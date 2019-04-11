@@ -1,7 +1,7 @@
 #ifndef SEQ_H
 #define SEQ_H
 
-// array handling
+// **************** Array handling
 
 inline void swap(int a[], int i, int j) {
     int t = a[i]; a[i] = a[j]; a[j] = t;
@@ -19,59 +19,83 @@ int* readArray(int *length);
 
 int checkArraySorted(int a[], int n);
 
+void printStrs(const char* strs[]);
+
+// **************** Sequence generator: formation phase
+
+typedef enum form_t {
+    Rand, Saw, Twine
+} form_t;
+
+form_t str2form(const char *str);
+
+const char* form2str(const form_t form);
+
+void printForms();
+
+void printFormsHints();
+
+// **************** Sequence generator: deformation phase
+
+typedef enum deform_t {
+    Id, Dither, Bound
+} deform_t;
+
+deform_t str2deform(const char *str);
+
+const char* deform2str(const deform_t gen);
+
+void printDeforms();
+
+// **************** Sequence generator: shaping phase
+
+typedef enum shape_t {
+    Pass,
+    Reverse,
+    Sort,
+    SortReverse,
+    Shuffle,
+    Jumble
+} shape_t;
+
+shape_t str2shape(const char *str);
+
+const char* shape2str(const shape_t shape);
+
+void printShapes();
+
+// **************** Sequence generator
+
+typedef struct gen_t {
+    // formation
+    form_t form;
+    int range;
+    int offset;
+    int slope;
+    // deformation
+    deform_t deform;
+    int lo;
+    int hi;
+    //
+    shape_t shape;
+    double p1;
+    double p2;
+} gen_t;
+
+
+void defaultGen(gen_t *gen);
+
+void generateSeq(int a[], int len, gen_t *gen);
+
+
 // sequence kinds
 
 typedef enum seq_t {
-    None,
-    Rand,
-    Zig, ZigRev, ZigRevFront, ZigRevBack,
-    Sort, SortRev,
-    Dither
+    None1,
+    Rand1,
+    Zig1, ZigRev1, ZigRevFront1, ZigRevBack1,
+    Sort1, SortRev1,
+    Dither1
 } seq_t;
-
-seq_t str2seq(const char *str);
-
-const char* seq2str(const seq_t seq);
-
-void printSequences(const char *prefix);
-
-// void generateSeq(int a[], int len, int modulo, seq_t kind);
-
-// Generators
-
-typedef enum gen1_t {
-    G1None,
-    G1Rand,
-    G1Saw,
-    G1Shuffle
-} gen1_t;
-
-typedef enum gen2_t {
-    G2None,
-    G2Id,
-    G2Dither,         //
-    G2Plateau         //
-} gen2_t;
-
-typedef enum gen3_t {
-    G3None,
-    G3Id,
-    G3Reverse,
-    G3ReverseFront,   // Reverse first p elements
-    G3ReverseBack,    // Reverse last p elements
-    G3Sort,
-    G3RandPerm,       // Make p random permutations
-    G3Swap            // Make p random exchanges
-} gen3_t;
-
-gen1_t str2gen1_t(const char *str);
-gen2_t str2gen2_t(const char *str);
-gen3_t str2gen3_t(const char *str);
-
-const char* gen1_t2str(const gen1_t gen);
-const char* gen2_t2str(const gen2_t gen);
-const char* gen3_t2str(const gen3_t gen);
-
-void generateSeq(int a[], int len, int modulo, gen1_t gen1_type, gen2_t gen2_type, gen3_t gen3_type, int p1, int p21, int p22, double p31, double p32);
 
 #endif

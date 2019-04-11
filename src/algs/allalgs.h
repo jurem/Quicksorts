@@ -183,18 +183,4 @@
 #undef ALG_NAME
 
 
-
-
-
-
-
-// **************** Out-place quicksort
-
-#define ALG_NAME QuickOut
-#include "do_time.h"
-#include "QuicksortOut.h"
-#include "do_stat.h"
-#include "QuicksortOut.h"
-#undef ALG_NAME
-
 #endif

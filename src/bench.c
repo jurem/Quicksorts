@@ -18,7 +18,7 @@ void doTime() {
     int* a = malloc(length * sizeof(int));
     timer_reset(&timer);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter31, parameter32); // generateSeq(a, length, modulo, seq);
+        generateSeq(a, length, &gen);
         timer_start(&timer);
         algtime(a, 0, length - 1);
         timer_stop(&timer);
@@ -29,13 +29,13 @@ void doTime() {
 
 
 void doStat() {
-    if (seq != Rand) maxRepeat = 1;
+    if (gen.form != Rand) maxRepeat = 1;
     srandom(use_seed ? seed : clock());
     int* a = malloc(length * sizeof(int));
     timer_reset(&timer);
     stat_reset(&stat);
     while (timer.repeats < maxRepeat && timer.timeTotal/CLOCKS_PER_SEC < maxTime) {
-        generateSeq(a, length, modulo, gen1, gen2, gen3, parameter1, parameter21, parameter22, parameter31, parameter32); // generateSeq(a, length, modulo, seq);
+        generateSeq(a, length, &gen);
         stat_start(&stat);
         timer_start(&timer);
         algstat(a, 0, length - 1);
@@ -48,6 +48,7 @@ void doStat() {
 
 
 int main(int argc, char * argv[]) {
+    defaultGen(&gen);
     processArgs(argc, argv);
     if (verbose_flag) printSettings();
 

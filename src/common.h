@@ -1,19 +1,64 @@
-#if defined(GENSEQ) || defined(BENCH)
-// input array
-seq_t seq = Rand;		// random sequence
-int modulo = 0;   		// zero means same as length
-int use_seed = 0;  		// seed (default) or given seed
-int seed;
-gen1_t gen1;
-gen2_t gen2;
-gen3_t gen3;
-int parameter1;
-int parameter21;
-int parameter22;
-double parameter31;
-double parameter32;
+void printUsage(const char *app_name) {
+    // Usage
+#if defined(RUNALG) || defined(BENCH)
+    printf("Usage: %s alg\n", app_name);
+    printAlgs("  alg: ");
+#else
+    printf("Usage: %s\n", app_name);
 #endif
-int length = 1000;		// length of sequence / pre-reserved space
+    // Options
+    printf("\nOptions:\n");
+    printf("  -v, --verbose\n\tPrint settings.\n");
+    printf("  -h, --help\n\tPrint short help.\n");
+
+#if defined(GENSEQ) || defined(BENCH)
+    printf("  -s num, --seed num\n\tSeed for the random number generator.\n");
+    printf("  -l num, --length num\n\tSequence length (default 100).\n");
+    printf("\nFormation phase options:\n");
+    printf("  -F form, --form form\n");
+    printf("\tGenerated numbers are in a range [offset, offset + range).\n");
+    printf("\tForm of a generated sequence: ");
+    printForms();
+    printFormsHints();
+    printf("  -R num, --range num\n\tRange of the generated values is from 0 to rng-1.\n\tZero sets it to the length.\n");
+    printf("  -O num, --offset num\n\tOffset of the range. Can be negative,\n");
+    printf("  -P num, --slope num\n\tSlope of the Saw pattern.\n");
+    // parameter 1
+    printf("\nDeformation phase options:\n");
+    printf("  -D deform, --deform deform\n\tDeform of a generated sequence: ");
+    printDeforms();
+    printf("  -L num, --lo num\n\tLower bound in the deform phase.\n");
+    printf("  -H num, --hi num\n\tUpper bound in the deform phase.\n");
+    // p1
+    // p2
+    printf("\nShaping phase options:\n");
+    printf("  -S shape, --shape shape\n\tShape of the generated sequence: ");
+    printShapes();
+    printf("  -B num, --begin num \n\tTODO\n");
+    printf("  -E num, --end num\n\tTODO.\n");
+#endif
+#if defined(GENSEQ) || defined(BENCH)
+    printf("  -K seq, --kind seq\n\tInput sequence kind.\n");
+#endif
+#if defined(RUNALG) || defined(BENCH)
+    printf("\nBenchmark options:\n");
+    printf("  -r num, --repeat num\n\tMax number of repeates.\n");
+    printf("  -t sec, --time sec\n\tMax benchmark time.\n");
+#endif
+#if defined(RUNALG)
+    printf("  -i, --input\n\tPrint input array.\n");
+    printf("  -o, --output\n\tPrint output array.\n");
+#endif
+}
+
+
+// **************** Input sequence properties
+int length = 100;       // length of sequence / pre-reserved space
+#if defined(GENSEQ) || defined(BENCH)
+int use_seed = 0;       // seed (default) or given seed
+int seed;
+gen_t gen;
+#endif
 
 #if defined(RUNALG) || defined(BENCH)
 // benchmark
@@ -38,90 +83,79 @@ int verbose_flag = 0;
 int help_flag = 0;
 
 
-// command-line long options
-struct option options[] = {
-#if defined(GENSEQ) || defined(BENCH)
-    {"kind",    required_argument, 0, 'k'},
-    {"modulo",  required_argument, 0, 'm'},
-    {"seed",    required_argument, 0, 's'},
-    {"gen1",    required_argument, 0, 'A'},
-    {"gen2",    required_argument, 0, 'B'},
-    {"gen3",    required_argument, 0, 'C'},
-    {"p1",      required_argument, 0, 'X'},
-    {"p21",     required_argument, 0, 'Y'},
-    {"p22",     required_argument, 0, 'Q'},
-    {"p3",      required_argument, 0, 'Z'},
-#endif
-#if defined(RUNALG) || defined(BENCH)
-    {"repeat",  required_argument, 0, 'r'},
-    {"time",    required_argument, 0, 't'},
-#endif
-#ifdef RUNALG
-    {"input",   no_argument, &input_flag, 1},
-    {"output",  no_argument, &output_flag, 1},
-#endif
-    {"length",  required_argument, 0, 'l'},
-    {"verbose", no_argument, &verbose_flag, 1},
-    {"help",    no_argument, &help_flag, 1},
-    {0, 0, 0, 0}
-};
-
-
-// command-line short options
-#ifdef GENSEQ
-#define SHORTOPT "hvl:k:m:s:A:B:C:X:Y:Q:W:Z:"
-#endif
-#ifdef RUNALG
-#define SHORTOPT "hviol:r:t:"
-#endif
-#ifdef BENCH
-#define SHORTOPT "hvl:k:m:s:r:t:A:B:C:X:Y:Q:W:Z:"
-#endif
-
-
-void printUsage(const char *app_name) {
-	// Usage
-#if defined(RUNALG) || defined(BENCH)
-    printf("Usage: %s alg\n", app_name);
-    printAlgs("  alg: ");
-#else
-    printf("Usage: %s\n", app_name);
-#endif
-    // Options
-    printf("\nOptions:\n");
-#if defined(GENSEQ) || defined(BENCH)
-    printf("  -k seq, --kind seq\n\tInput sequence kind.\n");
-    printSequences("\tseq: ");
-#endif
-    printf("  -l len, --length len\n\tLength of input sequence.\n");
-#if defined(GENSEQ) || defined(BENCH)
-    printf("  -m mod, --modulo mod\n\tRange of values is from 0 to mod-1.\n\tIf mod is zero than the same as the length.\n");
-    printf("  -s num, --seed num\n\tSeed for the random number generator.\n");
-#endif
-#if defined(RUNALG) || defined(BENCH)
-    printf("  -r num, --repeat num\n\tMax number of repeates.\n");
-    printf("  -t sec, --time sec\n\tMax benchmark time.\n");
-#endif
-#if defined(RUNALG)
-    printf("  -i, --input\n\tPrint input array.\n");
-    printf("  -o, --output\n\tPrint output array.\n");
-#endif
-    printf("  -v, --verbose\n\tPrint settings.\n");
-    printf("  -h, --help\n\tPrint short help.\n");
-}
-
-
 void printSettings() {
 #if defined(GENSEQ) || defined(BENCH)
-    printf("Input:   length=%d, modulo=%d", length, modulo);
+    printf("Input:   length=%d, modulo=%d", length, gen.range);
     if (use_seed) printf(", seed=%d", seed); else printf(", seed=rnd");
-    printf(", (%s-%d) (%s-%d-%d) (%s-%f-%f)", gen1_t2str(gen1), parameter1, gen2_t2str(gen2), parameter21, parameter22, gen3_t2str(gen3), parameter31, parameter32);
+//    printf(", (%s-%d) (%s-%d-%d) (%s-%f-%f)", form2str(gen.form), gen.slope, deform2str(gen.deform), parameter21, parameter22, shape2str(shape), parameter31, parameter32);
     printf("\n");
 #endif
 #if defined(RUNALG) || defined(BENCH)
     printf("Bench: maxRepeat=%d, maxTime=%d", maxRepeat, maxTime);
     printf("\n");
 #endif
+}
+
+
+// **************** Command-line options and arguments handling
+
+// command-line long options
+struct option options[] = {
+    {"length",      required_argument, 0, 'l'},
+#if defined(GENSEQ) || defined(BENCH)
+    // formation
+    {"form",        required_argument, 0, 'F'},
+    {"range",       required_argument, 0, 'R'},
+    {"offset",      required_argument, 0, 'O'},
+    {"slope",       required_argument, 0, 'P'},
+
+    {"seed",        required_argument, 0, 's'},
+    // deformation
+    {"deform",      required_argument, 0, 'D'},
+    {"lo",          required_argument, 0, 'L'},
+    {"hi",          required_argument, 0, 'H'},
+    // shaping
+    {"shape",       required_argument, 0, 'S'},
+    {"begin",       required_argument, 0, 'B'},
+    {"end",         required_argument, 0, 'E'},
+    // predefined sequence kinds
+    {"kind",        required_argument, 0, 'K'},
+#endif
+#if defined(RUNALG) || defined(BENCH)
+    {"repeat",      required_argument, 0, 'r'},
+    {"time",        required_argument, 0, 't'},
+#endif
+#ifdef RUNALG
+    {"input",       no_argument, &input_flag, 1},
+    {"output",      no_argument, &output_flag, 1},
+#endif
+    {"verbose",     no_argument, &verbose_flag, 1},
+    {"help",        no_argument, &help_flag, 1},
+    {0, 0, 0, 0}
+};
+
+
+// command-line short options
+#ifdef GENSEQ
+#define SHORTOPT "hvl:F:R:O:P:s:D:L:H:S:B:E:K:"
+#endif
+#ifdef RUNALG
+#define SHORTOPT "hviol:r:t:"
+#endif
+#ifdef BENCH
+#define SHORTOPT "hvl:F:R:O:P:s:D:L:H:S:B:E:K:r:t:"
+#endif
+
+
+void die(int status, const char* msg) {
+    fprintf(stderr, "%s\n", msg);
+    exit(status);
+}
+
+
+void dieArg(int status, const char* fmt, const char* msg) {
+    fprintf(stderr, fmt, msg);
+    exit(status);
 }
 
 
@@ -134,42 +168,59 @@ void processArgs(int argc, char* argv[]) {
             case 0:
                 if (options[option_index].flag != 0) break;
                 break;
+            case 'v':
+                verbose_flag = 1;
+                break;
+            case 'h':
+                help_flag = 1;
+                break;
+            case 'l':
+                length = atoi(optarg);
+                break;
+            // case 'G':
+            //     gen.form = str2form(optarg);
+            //     if ((int)gen.form < 0) dieArg(1, "Invalid form specified: '%s'.\n", optarg);
+            //     break;
 #if defined(GENSEQ) || defined(BENCH)
-            case 'k':
-                seq = str2seq(optarg);
-                break;
-            case 'm':
-                modulo = atoi(optarg);
-                break;
             case 's':
                 seed = atoi(optarg);
                 use_seed = 1;
                 break;
-
-            case 'A': // gen1
-                gen1 = str2gen1_t(optarg);
+            // form
+            case 'F':
+                gen.form = str2form(optarg);
+                if ((int)gen.form < 0) dieArg(1, "Invalid form specified: '%s'.\n", optarg);
                 break;
-            case 'B': // gen2
-                gen2 = str2gen2_t(optarg);
+            case 'R':
+                gen.range = atoi(optarg);
                 break;
-            case 'C': // gen3
-                gen3 = str2gen3_t(optarg);
+            case 'O':
+                gen.offset = atoi(optarg);
                 break;
-
-            case 'X': // p1
-                parameter1 = atoi(optarg);
+            case 'P':
+                gen.slope = atoi(optarg);
                 break;
-            case 'Y': // p21
-                parameter21 = atoi(optarg);
+            // deform
+            case 'D':
+                gen.deform = str2deform(optarg);
+                if ((int)gen.deform < 0) dieArg(1, "Invalid deform specified: '%s'.\n", optarg);
                 break;
-            case 'Q': // p22
-                parameter22 = atoi(optarg);
+            case 'L':
+                gen.lo = atoi(optarg);
                 break;
-            case 'W': // p31
-                parameter31 = atof(optarg);
+            case 'H':
+                gen.hi = atoi(optarg);
                 break;
-            case 'Z': // p32
-                parameter32 = atof(optarg);
+            // shape
+            case 'S':
+                gen.shape = str2shape(optarg);
+                if ((int)gen.shape < 0) dieArg(1, "Invalid shape specified: '%s'.\n", optarg);
+                break;
+            case 'B': // p31
+                gen.p1 = atof(optarg);
+                break;
+            case 'E': // p32
+                gen.p2 = atof(optarg);
                 break;
 #endif
 #if defined(RUNALG) || defined(BENCH)
@@ -188,15 +239,6 @@ void processArgs(int argc, char* argv[]) {
                 output_flag = 1;
                 break;
 #endif                
-            case 'l':
-                length = atoi(optarg); 
-                break;
-			case 'v':
-                verbose_flag = 1;
-                break;
-			case 'h':
-				help_flag = 1;
-                break;
             case '?':
                 exit(3);
                 break;
@@ -211,7 +253,7 @@ void processArgs(int argc, char* argv[]) {
     }
 
 #if defined(GENSEQ) || defined(BENCH)
-    if (modulo <= 0) modulo = length;
+    if (gen.range <= 0) gen.range = length;
 #endif
 
     if (optind < argc) {
